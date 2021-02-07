@@ -1,0 +1,20 @@
+version: '3'
+services:
+  node01:
+    image: quay.io/m3db/m3dbnode:v1.1.0
+    volumes:
+    - ./node/node01/m3db:/var/lib/m3db
+    - ./node/node01/m3kv:/var/lib/m3kv
+  node02:
+    image: quay.io/m3db/m3dbnode:v1.1.0
+    volumes:
+    - ./node/node02/m3db:/var/lib/m3db
+    - ./node/node02/m3kv:/var/lib/m3kv
+  node03:
+    image: quay.io/m3db/m3dbnode:v1.1.0
+    volumes:
+    - ./node/node03/m3db:/var/lib/m3db
+    - ./node/node03/m3kv:/var/lib/m3kv
+  coordinator:
+    build: ./dockerfiles/coordinator
+    image: coordinator
