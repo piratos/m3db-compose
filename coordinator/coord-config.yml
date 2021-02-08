@@ -1,8 +1,8 @@
 listenAddress: 0.0.0.0:7201
 local:
   namespaces:
-  - namespace: default
-    retention: 48h
+  - namespace: test
+    retention: 168h
     type: unaggregated
 logging:
   level: info
@@ -19,8 +19,8 @@ tagOptions:
   idScheme: quoted
 clusters:
   - namespaces:
-      - namespace: default
-        retention: 48h
+      - namespace: test
+        retention: 168h
         type: unaggregated
     client:
       config:
