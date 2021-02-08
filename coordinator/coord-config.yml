@@ -1,0 +1,39 @@
+listenAddress: 0.0.0.0:7201
+local:
+  namespaces:
+  - namespace: default
+    retention: 48h
+    type: unaggregated
+logging:
+  level: info
+metrics:
+  extended: none
+  prometheus:
+    handlerPath: /metrics
+    listenAddress: 0.0.0.0:7203
+  samplingRate: 1
+  sanitization: prometheus
+  scope:
+    prefix: coordinator
+tagOptions:
+  idScheme: quoted
+clusters:
+  - namespaces:
+      - namespace: default
+        retention: 48h
+        type: unaggregated
+    client:
+      config:
+        service:
+          env: default_env
+          zone: embedded
+          service: m3db
+          cacheDir: /var/lib/m3kv
+          etcdClusters:
+            - zone: embedded
+              endpoints:
+                - node01:2379
+                - node02:2379
+                - node03:2379
+      writeConsistencyLevel: majority
+      readConsistencyLevel: unstrict_majority

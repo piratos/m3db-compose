@@ -3,3 +3,4 @@ node/node*/m3kv/*
 prometheus/data/*
 dockerfiles/coordinator/m3coordinator
 dockerfiles/node/m3dbnode
+coordinator/m3kv/*
