@@ -1,20 +1,53 @@
 version: '3'
 services:
   node01:
-    image: quay.io/m3db/m3dbnode:v1.1.0
+    build: ./dockerfiles/node
+    image: m3dbnode
+    hostname: node01
     volumes:
-    - ./node/node01/m3db:/var/lib/m3db
-    - ./node/node01/m3kv:/var/lib/m3kv
+      - ./node/node01/m3db:/var/lib/m3db
+      - ./node/node01/m3kv:/var/lib/m3kv
+      - ./node/node01/config.yml:/etc/m3dbnode/m3dbnode.yml
   node02:
-    image: quay.io/m3db/m3dbnode:v1.1.0
+    build: ./dockerfiles/node
+    image: m3dbnode
+    hostname: node02
     volumes:
-    - ./node/node02/m3db:/var/lib/m3db
-    - ./node/node02/m3kv:/var/lib/m3kv
+      - ./node/node02/m3db:/var/lib/m3db
+      - ./node/node02/m3kv:/var/lib/m3kv
+      - ./node/node02/config.yml:/etc/m3dbnode/m3dbnode.yml
   node03:
-    image: quay.io/m3db/m3dbnode:v1.1.0
+    build: ./dockerfiles/node
+    image: m3dbnode
+    hostname: node03
     volumes:
-    - ./node/node03/m3db:/var/lib/m3db
-    - ./node/node03/m3kv:/var/lib/m3kv
+      - ./node/node03/m3db:/var/lib/m3db
+      - ./node/node03/m3kv:/var/lib/m3kv
+      - ./node/node03/config.yml:/etc/m3dbnode/m3dbnode.yml
   coordinator:
     build: ./dockerfiles/coordinator
     image: coordinator
+    hostname: coordinator
+    volumes:
+      - ./coordinator/m3kv:/var/lib/m3kv
+      - ./coordinator/coord-config.yml:/etc/m3coordinator/m3coordinator.yml
+  prometheus:
+    image: prom/prometheus:v2.23.0
+    hostname: prometheus
+    volumes:
+      - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/data:/var/lib/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/var/lib/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--storage.tsdb.retention.time=15d'
+      - '--storage.tsdb.max-block-duration=30m'
+  grafana:
+    image: grafana/grafana:7.4.0
+    hostname: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
