@@ -1,2 +1,5 @@
-node*/m3db/*
-node*/m3kv/*
+node/node*/m3db/*
+node/node*/m3kv/*
+prometheus/data/*
+dockerfiles/coordinator/m3coordinator
+dockerfiles/node/m3dbnode
